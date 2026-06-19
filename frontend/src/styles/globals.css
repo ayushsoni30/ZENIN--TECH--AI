@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #111118;
+}
+::-webkit-scrollbar-thumb {
+  background: #2d2d4a;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #22c55e55;
+}
+
+/* ── Selection color ── */
+::selection {
+  background: #16a34a55;
+  color: #86efac;
+}
+
+/* ── Code block overrides inside markdown ── */
+.prose pre {
+  border: 1px solid #2d2d4a;
+  border-radius: 10px;
+  position: relative;
+}
+
+.prose code:not(pre code) {
+  background: #1a1a26;
+  border: 1px solid #2d2d4a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875em;
+}
+
+/* ── Table styles in markdown ── */
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.prose th {
+  background: #1a1a26;
+  color: #4ade80;
+}
+.prose td,
+.prose th {
+  border: 1px solid #2d2d4a;
+  padding: 8px 12px;
+}
+
+/* ── Blockquote style ── */
+.prose blockquote {
+  border-left: 3px solid #22c55e;
+  background: #0f1f17;
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  font-style: normal;
+}
+
+/* ── Thinking indicator dots ── */
+.typing-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: bounce-dot 1.4s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce-dot {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Glow effect for brand elements ── */
+.glow-green {
+  box-shadow: 0 0 20px #22c55e30, 0 0 40px #22c55e10;
+}
+.glow-text {
+  text-shadow: 0 0 20px #22c55e60;
+}
+
+/* ── Input focus ring ── */
+.input-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #22c55e60, 0 0 15px #22c55e20;
+}
+
+/* ── Message entrance animation ── */
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.message-enter {
+  animation: messageIn 0.35s ease-out forwards;
+}
+
+/* ── Sidebar active state glow ── */
+.session-active {
+  background: linear-gradient(135deg, #0f2a1a 0%, #111118 100%);
+  border-color: #22c55e50 !important;
+}
