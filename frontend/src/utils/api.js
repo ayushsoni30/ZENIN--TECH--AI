@@ -2,10 +2,7 @@ import axios from "axios";
 
 // Base API instance — points to our Express backend
 const api = axios.create({
-  baseURL:
-    import.meta.env.ENV === "development"
-      ? "http://localhost:5173/api"
-      : `${import.meta.env.VITE_SERVER_ID}/api`,
+  baseURL: import.meta.env.VITE_SERVER_ID || "http://localhost:5173/api",
   headers: {
     "Content-Type": "application/json",
   },
