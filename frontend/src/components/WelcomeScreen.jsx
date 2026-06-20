@@ -58,7 +58,7 @@ function WelcomeScreen() {
         </p>
 
         {/* Domain badge */}
-        <div className="inline-flex items-center gap-2 mt-4 bg-yellow-600 text950 border border-brand-800 text-black text-xs font-medium px-4 py-1.5 rounded-full">
+        <div className="inline-flex items-center gap-2 mt-4 bg-yellow-600 border border-brand-800 text-slate-950 text-xs font-medium px-4 py-1.5 rounded-full">
           <span className="w-1.5 h-1.5 bg-brand-500 rounded-full animate-pulse" />
           Technical domain only
         </div>

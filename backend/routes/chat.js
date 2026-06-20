@@ -67,11 +67,13 @@ router.post("/message", async (req, res) => {
 
     // Call Anthropic Claude API
     const claudeResponse = await axios.post(
-    "https://api.anthropic.com/v1/messages",
-  {
-    messages: apiMessages,
-    systemPrompt: SYSTEM_PROMPT,
-  },
+      "https://api.anthropic.com/v1/messages",
+      {
+        model: "claude-sonnet-4-6",
+        messages: apiMessages,
+        system: SYSTEM_PROMPT,
+        max_tokens: 4096,
+      },
       {
         headers: {
           "x-api-key": process.env.ANTHROPIC_API_KEY,

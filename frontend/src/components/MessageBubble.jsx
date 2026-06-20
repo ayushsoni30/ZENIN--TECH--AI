@@ -84,8 +84,9 @@ function MessageBubble({ message }) {
                 remarkPlugins={[remarkGfm]}
                 components={{
                   // Style inline code differently
-                  code({ node, inline, className, children, ...props }) {
-                    if (inline) {
+                  code({ node, className, children, ...props }) {
+                    const isInline = !className && !String(children).includes("\n");
+                    if (isInline) {
                       return (
                         <code
                           className="font-mono text-brand-300 bg-surface-800 px-1.5 py-0.5 rounded text-xs border border-surface-500"

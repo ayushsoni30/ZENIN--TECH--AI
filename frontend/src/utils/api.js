@@ -2,7 +2,10 @@ import axios from "axios";
 
 // Base API instance — points to our Express backend
 const api = axios.create({
-  baseURL: "/api",
+  baseURL:
+    import.meta.env.ENV === "development"
+      ? "http://localhost:5173/api"
+      : `${import.meta.env.VITE_SERVER_ID}/api`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,8 +22,7 @@ export const sendMessage = (message, sessionId = null) =>
 export const getAllSessions = () => api.get("/chat/sessions");
 
 // Load a specific session's messages by its ID
-export const getSession = (sessionId) =>
-  api.get(`/chat/session/${sessionId}`);
+export const getSession = (sessionId) => api.get(`/chat/session/${sessionId}`);
 
 // Delete a specific session
 export const deleteSession = (sessionId) =>

@@ -42,8 +42,8 @@ function Sidebar({ sessions, activeSessionId, onNewChat, onSelectSession, onDele
       {/* Logo */}
       <div className="p-4 border-b border-surface-600">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center flex-shrink-0 glow-green" >
-            <Terminal size={50} className="text-yellow-400" />
+          <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0 glow-green" >
+            <Terminal size={18} className="text-white" />
           </div>
           {!collapsed && (
             <div>
