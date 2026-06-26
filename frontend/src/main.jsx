@@ -7,10 +7,10 @@ import { Auth0Provider } from "@auth0/auth0-react";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Auth0Provider
-      domain="dev-fdwq24qwcq80fovo.us.auth0.com"
-      clientId="qncSUEIa20kuSxZFWQ2PA1XJL5Mygtry"
-      authorizationParams={{ redirect_uri: window.location.origin }}
-    >
+  domain={import.meta.env.VITE_AUTH0_DOMAIN}
+  clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+  authorizationParams={{ redirect_uri: window.location.origin + "/callback" }}
+>
       <App />
     </Auth0Provider>
   </React.StrictMode>,
