@@ -13,8 +13,13 @@ const PORT = process.env.PORT || 3000;
 // Allow requests from our React frontend
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    allowedHeaders: ["Content-Type"],
+    origin: [
+      "http://localhost:5173",
+      "https://zenin-tech-ai.vercel.app"  
+    ],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
   })
 );
 

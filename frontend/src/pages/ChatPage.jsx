@@ -37,7 +37,7 @@ function ChatPage() {
   user,
 } = useAuth0();
 
-  console.log("AUTH0 USER:", user);
+  
   // Reference to the bottom of the message list for auto-scrolling
   const bottomRef = useRef(null);
 
