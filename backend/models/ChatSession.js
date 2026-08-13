@@ -20,6 +20,11 @@ const messageSchema = new mongoose.Schema({
 // Schema for a chat session (collection of messages)
 const chatSessionSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+      index: true,
+    },
     sessionId: {
       type: String,
       required: true,

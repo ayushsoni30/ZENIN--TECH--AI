@@ -6,22 +6,12 @@ require("dotenv").config();
 const chatRoutes = require("./routes/chat");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // ─── MIDDLEWARE ──
 
-// Allow requests from our React frontend
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://zenin-tech-ai.vercel.app"  
-    ],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-  })
-);
+// Allow all CORS requests for now to prevent any permission issues
+app.use(cors());
 
 // Parse JSON request bodies
 app.use(express.json({ limit: "10mb" }));

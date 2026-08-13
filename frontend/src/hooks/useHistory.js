@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import { getAllSessions, deleteSession, clearAllSessions } from "../utils/api";
+import { getAllSessions, deleteSession, clearAllSessions, setAuthToken } from "../utils/api";
 
 // Manages the list of all past chat sessions shown in the sidebar
-export function useHistory() {
+export function useHistory(user) {
   const [sessions, setSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,10 +40,15 @@ export function useHistory() {
     }
   }, []);
 
-  // Load sessions when the hook mounts
+  // Load sessions only after user is authenticated and header is configured
   useEffect(() => {
-    fetchSessions();
-  }, [fetchSessions]);
+    if (user?.sub) {
+      setAuthToken(user.sub);
+      fetchSessions();
+    } else {
+      setAuthToken(null);
+    }
+  }, [user, fetchSessions]);
 
   return { sessions, isLoading, fetchSessions, removeSession, clearAll };
 }

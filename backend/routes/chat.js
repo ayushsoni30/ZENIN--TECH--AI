@@ -33,8 +33,13 @@ RULES:
 // Send a message and get a response. Creates or continues a session.
 router.post("/message", async (req, res) => {
   const { message, sessionId } = req.body;
+  const userId = req.headers["x-user-id"];
 
   // Basic validation
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized. User ID is required." });
+  }
+
   if (!message || message.trim() === "") {
     return res.status(400).json({ error: "Message cannot be empty." });
   }
@@ -44,12 +49,13 @@ router.post("/message", async (req, res) => {
 
     // Find existing session or start a new one
     if (sessionId) {
-      session = await ChatSession.findOne({ sessionId });
+      session = await ChatSession.findOne({ sessionId, userId });
     }
 
     if (!session) {
       // Brand new conversation
       session = new ChatSession({
+        userId,
         sessionId: uuidv4(),
         messages: [],
       });
@@ -111,7 +117,12 @@ router.post("/message", async (req, res) => {
 // Get all past chat sessions (for the sidebar history)
 router.get("/sessions", async (req, res) => {
   try {
-    const sessions = await ChatSession.find({ isActive: true })
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized. User ID is required." });
+    }
+
+    const sessions = await ChatSession.find({ userId, isActive: true })
       .select("sessionId title createdAt updatedAt") // Only return metadata, not full messages
       .sort({ updatedAt: -1 }) // Most recent first
       .limit(50); // Reasonable limit
@@ -127,8 +138,14 @@ router.get("/sessions", async (req, res) => {
 // Load all messages for a specific session
 router.get("/session/:sessionId", async (req, res) => {
   try {
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized. User ID is required." });
+    }
+
     const session = await ChatSession.findOne({
       sessionId: req.params.sessionId,
+      userId,
     });
 
     if (!session) {
@@ -146,8 +163,13 @@ router.get("/session/:sessionId", async (req, res) => {
 // Delete (soft-delete) a session
 router.delete("/session/:sessionId", async (req, res) => {
   try {
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized. User ID is required." });
+    }
+
     await ChatSession.findOneAndUpdate(
-      { sessionId: req.params.sessionId },
+      { sessionId: req.params.sessionId, userId },
       { isActive: false }
     );
 
@@ -162,7 +184,12 @@ router.delete("/session/:sessionId", async (req, res) => {
 // Clear all sessions
 router.delete("/sessions/all", async (req, res) => {
   try {
-    await ChatSession.updateMany({ isActive: true }, { isActive: false });
+    const userId = req.headers["x-user-id"];
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized. User ID is required." });
+    }
+
+    await ChatSession.updateMany({ userId, isActive: true }, { isActive: false });
     res.json({ message: "All sessions cleared." });
   } catch (error) {
     console.error("Clear all error:", error.message);

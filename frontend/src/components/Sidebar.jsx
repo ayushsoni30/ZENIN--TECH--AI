@@ -10,7 +10,7 @@ import {
   Eraser,
 } from "lucide-react";
 
-function Sidebar({ sessions, activeSessionId, onNewChat, onSelectSession, onDeleteSession, onClearAll, isLoading }) {
+function Sidebar({ sessions, activeSessionId, onNewChat, onSelectSession, onDeleteSession, onClearAll, isLoading, isMobileOpen, onClose }) {
   const [collapsed, setCollapsed] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -27,25 +27,27 @@ function Sidebar({ sessions, activeSessionId, onNewChat, onSelectSession, onDele
 
   return (
     <aside
-      className={`relative flex flex-col bg-surface-800 border-r border-surface-600 transition-all duration-300 ease-in-out flex-shrink-0 ${
-        collapsed ? "w-14" : "w-64"
+      className={`fixed inset-y-0 left-0 z-40 md:relative md:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col bg-surface-800 border-r border-surface-600 flex-shrink-0 ${
+        isMobileOpen ? "translate-x-0 w-64" : "-translate-x-full md:translate-x-0"
+      } ${
+        collapsed ? "md:w-14" : "md:w-64"
       }`}
     >
       {/* Collapse toggle button */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute -right-3 top-6 z-10 w-6 h-6 bg-surface-600 border border-surface-500 rounded-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-surface-500 transition-colors"
+        className="hidden md:flex absolute -right-3 top-6 z-10 w-6 h-6 bg-surface-600 border border-surface-500 rounded-full items-center justify-center text-slate-400 hover:text-white hover:bg-surface-500 transition-colors"
       >
         {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
       </button>
 
       {/* Logo */}
-      <div className="p-4 border-b border-surface-600">
+      <div className="p-4 border-b border-surface-600 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center flex-shrink-0 glow-green" >
             <Terminal size={18} className="text-white" />
           </div>
-          {!collapsed && (
+          {(!collapsed || isMobileOpen) && (
             <div>
               <h1 className="font-display font-bold text-white text-sm leading-tight">
                 ZeniN 
@@ -54,12 +56,21 @@ function Sidebar({ sessions, activeSessionId, onNewChat, onSelectSession, onDele
             </div>
           )}
         </div>
+        {/* Mobile close button */}
+        <button
+          onClick={onClose}
+          className="md:hidden text-slate-400 hover:text-white p-1 rounded-lg hover:bg-surface-700 transition-colors"
+        >
+          <ChevronLeft size={20} />
+        </button>
       </div>
 
-      {/* New Chat button */}
       <div className="p-3">
         <button
-          onClick={onNewChat}
+          onClick={() => {
+            onNewChat();
+            if (isMobileOpen && onClose) onClose();
+          }}
           className={`w-full flex items-center gap-2.5 bg-yellow-600 hover:bg-brand-500 text-white rounded-xl px-3 py-2.5 text-sm font-medium font-body transition-all duration-200 glow-green ${
             collapsed ? "justify-center" : ""
           }`}
@@ -104,7 +115,10 @@ function Sidebar({ sessions, activeSessionId, onNewChat, onSelectSession, onDele
                   ? "session-active border-brand-700/50 text-brand-400"
                   : "border-transparent hover:bg-surface-700 hover:border-surface-500 text-slate-400 hover:text-slate-300"
               }`}
-              onClick={() => onSelectSession(session.sessionId)}
+              onClick={() => {
+                onSelectSession(session.sessionId);
+                if (isMobileOpen && onClose) onClose();
+              }}
             >
               <MessageSquare
                 size={15}

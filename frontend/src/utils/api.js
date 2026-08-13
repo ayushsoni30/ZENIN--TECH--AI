@@ -28,4 +28,13 @@ export const deleteSession = (sessionId) =>
 // Delete all sessions
 export const clearAllSessions = () => api.delete("/chat/sessions/all");
 
+// Set user ID header dynamically
+export const setAuthToken = (userId) => {
+  if (userId) {
+    api.defaults.headers.common["x-user-id"] = userId;
+  } else {
+    delete api.defaults.headers.common["x-user-id"];
+  }
+};
+
 export default api;

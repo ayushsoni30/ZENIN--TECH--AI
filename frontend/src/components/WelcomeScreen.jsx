@@ -65,7 +65,7 @@ function WelcomeScreen() {
       </div>
 
       {/* Capabilities grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 w-full max-w-2xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 w-full max-w-2xl">
         {CAPABILITIES.map(({ icon: Icon, title, desc }) => (
           <div
             key={title}
